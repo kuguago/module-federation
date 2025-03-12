@@ -15,11 +15,13 @@ declare global {
 
 if (window.__MICRO_APP_ENVIRONMENT__) {
   console.log("子应用在微前端环境下");
+  console.log(window);
   const app = createApp(App);
   app.use(router);
   app.mount("#app");
 } else {
   console.log("子应用单独运行");
+  console.log(window);
   const app = createApp(App);
   app.use(router);
   app.mount("#app");

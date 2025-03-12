@@ -16,10 +16,30 @@ declare global {
 const app = createApp(App);
 
 microApp.start({
-  excludeAssetFilter: (url) => {
-    console.log("url-------------", url);
-    return true;
+  globalAssets: {
+    js: [
+      "https://aplus-front-cdn.oss-cn-hangzhou.aliyuncs.com/aplus-frontend-static-resource-umd/vue/dist/vue.global.prod.js",
+      "https://aplus-front-cdn.oss-cn-hangzhou.aliyuncs.com/aplus-frontend-static-resource-umd/vue-router/dist/vue-router.global.prod.js",
+    ],
+  },
+  plugins: {
+    modules: {
+      "my-app": [
+        {
+          loader(code, url) {
+            // 按实际情况 加js文件判断
+            // VUE
+            code = code.replace("var Vue", "window.Vue");
+            // VUE-ROUTER
+            code = code.replace("var VueRouter", "window.VueRouter");
+            // ElementPlusIconsVue
+
+            return code;
+          },
+        },
+      ],
+    },
   },
 });
-microApp.setData("my-app", { Vue: window.Vue });
+microApp.setGlobalData({ Vue: "全局数据" });
 app.mount("#app");
